@@ -1,0 +1,30 @@
+import pandas as pd
+data = pd.read_csv('sales_data_2.csv')
+data.head()
+
+1)overall_gross_margin = ((data['Price'] - data['Cost']) / data['Cost']).mean()
+print("Overall Gross Margin:", overall_gross_margin)
+
+2)vendor_profit = data.groupby('Vendor')['Price'].sum() - data.groupby('Vendor')['Cost'].sum()
+most_profitable_vendor = vendor_profit.idxmax()
+print("Most Profitable Vendor:", most_profitable_vendor)
+
+3)customer_profit = data.groupby('Customer')['Price'].sum() - data.groupby('Customer')['Cost'].sum()
+least_profitable_customer = customer_profit.idxmin()
+print("Least Profitable Customer:", least_profitable_customer)
+
+4)data['Date'] = pd.to_datetime(data['Date'])
+data['DayOfWeek'] = data['Date'].dt.day_name()
+day_of_week_profit = data.groupby('DayOfWeek')['Price'].sum() - data.groupby('DayOfWeek')['Cost'].sum()
+most_profitable_day = day_of_week_profit.idxmax()
+print("Most Profitable Day of the Week:", most_profitable_day)
+
+5)least_profitable_day = day_of_week_profit.idxmin()
+print("Least Profitable Day of the Week:", least_profitable_day)
+
+6)data['GrossProfit'] = data['Price'] - data['Cost']
+data['3-Day Avg Gross Profit'] = data['GrossProfit'].rolling(window=3).mean()
+
+7)
+buying_price_percentiles = data['Cost'].quantile([0.25, 0.5, 0.75])
+selling_price_percentiles = data['Price'].quantile([0.25, 0.5, 0.75]
